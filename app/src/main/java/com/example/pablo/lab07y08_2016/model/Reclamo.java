@@ -77,4 +77,9 @@ public class Reclamo implements Serializable{
     public Double getLongitud() {return longitud;}
 
     public void setLongitud(Double longitud) {this.longitud = longitud;}
+
+    @Override
+    public String toString() {
+        return "Lat y log: "+latitud+"-"+longitud+". Titulo: "+titulo;
+    }
 }

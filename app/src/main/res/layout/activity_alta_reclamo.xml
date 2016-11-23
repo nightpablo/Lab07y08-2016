@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_alta_reclamo"
     android:orientation="vertical"
@@ -9,7 +10,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ReclamoActivity">
+    tools:context=".ReclamoActivity"
+    android:weightSum="1">
 
     <TextView
     android:text="Describa el reclamo"
@@ -54,6 +56,32 @@
         android:hint="ingrese el mail" />
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="227dp"
+        android:layout_weight="0.64"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="290dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@mipmap/ic_launcher"
+            android:id="@+id/imageView_AgregarImagen" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_crop"
+            android:id="@+id/imageButton_AgregarImagen"
+            android:scaleType="fitCenter"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbarAlwaysDrawVerticalTrack="false"
+            android:baselineAlignBottom="false"
+            android:foregroundGravity="bottom"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+
+    <LinearLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -68,6 +96,8 @@
             android:id="@+id/btnCancelar"
             android:text="Cancelar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:foregroundGravity="right" />
+
+    </LinearLayout>
     </LinearLayout>

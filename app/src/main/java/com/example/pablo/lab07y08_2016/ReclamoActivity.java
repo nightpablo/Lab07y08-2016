@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,11 +26,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.pablo.lab07y08_2016.model.Reclamo;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
@@ -80,20 +85,28 @@ public class ReclamoActivity extends AppCompatActivity implements com.google.and
                     public void onClick(View v) {
                         float[] Resultados = new float[10];
                         ArrayList<Reclamo> listaEncontrados = new ArrayList<Reclamo>();
+                        PolylineOptions rectOptions = new PolylineOptions();
+                        rectOptions.add(marker.getPosition()).color(Color.BLACK);
                         for(Reclamo i: listaReclamos){
                             if(i.getLatitud()!=marker.getPosition().latitude && i.getLongitud()!=marker.getPosition().longitude) {
                                 Resultados = new float[10];
                                 Location.distanceBetween(i.getLatitud(),i.getLongitud(),
                                         marker.getPosition().latitude,marker.getPosition().longitude,Resultados);
                                 float distanciaCalculada = Resultados[0];
-                                if(distanciaCalculada<Float.parseFloat(distanciaReclamo.getText().toString()))
+                                if(distanciaCalculada<Float.parseFloat(distanciaReclamo.getText().toString())*1000) {
+                                    rectOptions.add(new LatLng(i.getLatitud(),i.getLongitud())).color(Color.BLACK);
                                     listaEncontrados.add(i);
+                                }
 
                             }
                         }
+                        rectOptions.add(marker.getPosition()).color(Color.BLACK);
+                        Polyline polyline = myMap.addPolyline(rectOptions);
+                        myMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+
                         /*Location.distanceBetween(listaReclamos.get(0).getLatitud(),listaReclamos.get(0).getLongitud()
                         ,listaReclamos.get(1).getLatitud(),listaReclamos.get(1).getLongitud(),Resultados); *///Retorna en metros
-                        
+
                         miDialogo.dismiss();
                     }
                 });
@@ -145,9 +158,11 @@ public class ReclamoActivity extends AppCompatActivity implements com.google.and
         if(requestCode==CODIGO_RESULTADO_ALTA_RECLAMO && resultCode==RESULT_OK){
             Reclamo nuevoReclamo = (Reclamo) data.getExtras().get("result");
             myMap.addMarker(new MarkerOptions()
-            .position(nuevoReclamo.coordenadaUbicacion())
-            .title("Reclamo de "+nuevoReclamo.getEmail())
-            .snippet(nuevoReclamo.getTitulo()));
+                    .position(nuevoReclamo.coordenadaUbicacion())
+                    .title("Reclamo de "+nuevoReclamo.getEmail())
+                    .snippet(nuevoReclamo.getTitulo())
+            );
+
 
             listaReclamos.add(nuevoReclamo);
         }
